@@ -35,6 +35,7 @@ class Bomberman
   def initialize(width, height)
     @width = width
     @height = height
+    @tickcount = 0
     @bomberman = Player.new(@width / 5, @height - 5)
     @bricks = []
     @target = Target.new(rand(@width), rand(@height))
@@ -59,15 +60,10 @@ class Bomberman
   end
   
   def spawn_bricks
-    counter = (rand * 1.5).to_i
+    counter = (rand * (1.5 + (@tickcount / 18))).to_i
     counter.times do
       @bricks << Brick.new(rand(@width), rand(@height))
     end
-    
-    #counter = (rand * 1.5).to_i
-    #counter.times do
-    #  @bricks << Brick.new(rand(@width), 0)
-    #end
   end
   
   def input_map
@@ -122,6 +118,7 @@ class Bomberman
   def tick
     spawn_bricks
     check_collision
+    @tickcount += 1
   end
   
   def textbox_content
